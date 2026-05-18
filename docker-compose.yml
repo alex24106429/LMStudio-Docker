@@ -1,0 +1,22 @@
+services:
+  lm-studio:
+    build: .
+    image: lm-studio-novnc
+    container_name: lm-studio
+    restart: unless-stopped
+    shm_size: "8g"
+    ulimits:
+      memlock: -1
+    ports:
+      - "8080:8080"
+      - "1234:1234"
+    volumes:
+      - "./lm-models:/home/lmstudio/.cache/lm-studio/models"
+      - "./lm-config:/home/lmstudio/.config/LM Studio"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
